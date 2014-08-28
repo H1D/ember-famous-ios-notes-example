@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ember iOS notes app replica</title>
+  <script>ENV = { FEATURES: { 'query-params-new': true } }</script>
+  <link rel="stylesheet" href="vendor/normalize.css">
+  <link rel="stylesheet" type="text/css" href="vendor/famous.css">
+  <script src="vendor/require.js"></script>
+  <script src="vendor/famous.min.js"></script>
+  <script src="vendor/jquery.min.js"></script>
+  <script src="vendor/handlebars.min.js"></script>
+  <script src="vendor/ember.js"></script>
+  <script src="vendor/ember-data.js"></script>
+  <script src="vendor/moment.min.js"></script>
+  <script src="app.js"></script>
+  <script type="text/javascript">require(['main']);</script>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <script type="text/x-handlebars" id="application">
+    {{outlet}}
+  </script>
+  
+  <script type="text/x-handlebars" id="notes">
+    {{input value=filter type="search" classNames="notes-filter-input" placeholder="Search"}}
+
+    <ul class="notes-list">
+      {{#each filtered_notes}}
+        {{#link-to 'note' this tagName='li'  classNames="notes-list__note-link" activeClass="notes-list__note-link_active"}} 
+        
+          <span class="notes-list__note-title">
+            {{title}}
+          </span>
+
+          {{format-date date=updated classNames='note-list__note-date'format='DD/MM/YY'}}
+        {{/link-to}}
+      {{/each}}
+    </ul>
+
+    <div class="selected-note">
+      {{outlet}}
+    </div>
+  </script> 
+
+
+  <script type="text/x-handlebars" id="note">
+    <button class="selected-note__button" {{action addNote}} title="add note">+</button>
+    <button class="selected-note__button" {{action removeNote}}title="remove note">&ndash;</button>
+
+    {{format-date date=updated classNames='selected-note__updated'format='D MMMM YYYY, h:m'}}
+    {{textarea value=text classNames="selected-note__input"rows=20 action=startEdit}}
+  </script> 
+
+  <script type="text/x-handlebars" id="components/format-date">
+    {{formated_date}}
+  </script>
+</body> 
+</html>
