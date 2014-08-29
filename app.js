@@ -1,5 +1,22 @@
 App = null
 define( 'main', function(require){
+  // loading famo.us    
+  Engine = require('famous/core/Engine')
+  Transform = require('famous/core/Transform')
+  StateModifier = require('famous/modifiers/StateModifier')
+  Transitionable = require('famous/transitions/Transitionable')
+  SpringTransition = require('famous/transitions/SpringTransition')
+
+  // register spring transitions
+  Transitionable.registerMethod('spring', SpringTransition)
+
+  longSpring = {
+      method: 'spring',
+      period: 400,
+      dampingRatio: 0.3
+    }
+
+  // ember App
   App = Ember.Application.create();
   App.ApplicationAdapter = DS.FixtureAdapter.extend();
 
@@ -21,6 +38,15 @@ define( 'main', function(require){
       return this.store.find('note');
     }
   });
+
+  // App.NoteRoute = Ember.Route.extend({
+  //   renderTemplate: function(controller, model) {
+  //     this.render('note', {
+  //       outlet: 'note',
+  //       into: 'application'
+  //     });
+  //   }
+  // });
 
   App.NotesController = Ember.ArrayController.extend({
     filter: null,
@@ -47,6 +73,51 @@ define( 'main', function(require){
         this.get('model').deleteRecord();
       }
     }
+  });
+
+  FmView = require('fm-view');
+  FmTransitionable = require('fm-trans');
+  // App.NotesView = FmView.extend(FmTransitionable, {
+  //   renderNode: Em.computed.alias('App.mainContext'),
+  // });
+  App.NoteView = FmView.extend(FmTransitionable, {
+    classNames: ['selected-note'],
+    renderNode: Em.computed.alias('App.mainContext'),
+    maxDrugDist: 200,
+    surfaceProperties: {
+      properties: {
+        background: "url('img/handmadepaper.png') repeat"
+      }
+    },
+    dragStart: function(e) {
+      var touchobj;
+      touchobj = e.changedTouches[0];
+      this.set('dragStartPosition', touchobj.clientX);
+    }.on('touchstart'),
+
+    dragUpdate: function(e) {
+      var touchobj;
+      touchobj = e.changedTouches[0];
+      App.set('dragPosition', touchobj.clientX - this.get('dragStartPosition'));
+    }.on('touchmove'),
+
+    finishDrag: function(){
+      if (App.get('dragPosition') > this.get('maxDrugDist') / 2) {
+        translate = Transform.translate(this.get('maxDrugDist'), 0, 0);
+        rotate = Transform.rotate(0, -(3.14 / 12), 0);
+        this.fmTransform( Transform.multiply( translate, rotate ), longSpring );
+      } else {
+        this.fmTransform( Transform.translate(0, 0, 0), longSpring);
+      }
+    }.on('touchend'),
+
+    dragReact: function() {
+      x =  App.get('dragPosition');
+      a = (3.14 / 12) * ( x / this.get('maxDrugDist') )
+      translate = Transform.translate(x, 0, 0);
+      rotate = Transform.rotate(0, -a, 0);
+      this.fmTransform( Transform.multiply( translate, rotate ) );
+    }.observes('App.dragPosition')
   });
 
   App.Note = DS.Model.extend({

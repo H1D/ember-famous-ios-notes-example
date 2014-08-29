@@ -14,15 +14,19 @@
   <script src="vendor/ember-data.js"></script>
   <script src="vendor/moment.min.js"></script>
   <script src="app.js"></script>
+  <script src="fm-view.js"></script>
+  <script src="fm-trans.js"></script>
   <script type="text/javascript">require(['main']);</script>
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <script type="text/x-handlebars" id="application">
+  <script type="text/x-handlebars" data-template-name="application">
     {{outlet}}
+    {{outlet 'note'}}
+    <div class='famous-root'> </div>
   </script>
   
-  <script type="text/x-handlebars" id="notes">
+  <script type="text/x-handlebars" data-template-name="notes">
     {{input value=filter type="search" classNames="notes-filter-input" placeholder="Search"}}
 
     <ul class="notes-list">
@@ -44,7 +48,7 @@
   </script> 
 
 
-  <script type="text/x-handlebars" id="note">
+  <script type="text/x-handlebars" data-template-name="note">
     <button class="selected-note__button" {{action addNote}} title="add note">+</button>
     <button class="selected-note__button" {{action removeNote}}title="remove note">&ndash;</button>
 
@@ -52,7 +56,7 @@
     {{textarea value=text classNames="selected-note__input"rows=20 action=startEdit}}
   </script> 
 
-  <script type="text/x-handlebars" id="components/format-date">
+  <script type="text/x-handlebars" data-template-name="components/format-date">
     {{formated_date}}
   </script>
 </body> 

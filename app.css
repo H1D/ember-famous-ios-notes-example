@@ -1,9 +1,14 @@
 body {
 	font-family: Arial, sans-serif;
-	font-size: 16;
-	background: url('img/handmadepaper.png') repeat;
+	font-size: 16px;
+	background: #222;
 	padding: 1em;
 	color: #333;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
 }
 
 .selected-note__updated,
@@ -13,11 +18,10 @@ body {
 
 .notes-list {
 	position: absolute;
-	width: 25%;
+	width: 230px;
 	padding: 0;
 	margin: 0;
 	list-style: none;
-	border-right: #E7E7E7 1px solid;
 	height: 90%;
 }
 
@@ -28,14 +32,14 @@ body {
 
 .notes-list__note-link {
 	padding: .5em .5em .5em 0;
-	border-bottom: #E7E7E7 1px solid;
-	color: inherit;
+	color: white;
 	text-decoration: none;
 	cursor: pointer;
 }
 
 .notes-list__note-link_active {
 	background-color: #F0D97B;
+	color: #222;
 }
 
 .note-list__note-date {
@@ -44,7 +48,7 @@ body {
 }
 
 .selected-note {
-	margin-left: 28%;
+	padding: 1em;
 }
 
 .selected-note__input {
@@ -74,5 +78,5 @@ body {
 	outline: 0;
 	border-radius: .3em;
 	background-color: #E0E1E3;
-	width:25%;
+	width:220px;
 }
