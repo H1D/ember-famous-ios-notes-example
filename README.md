@@ -1,4 +1,4 @@
-A demo for EmberFest14 talk
+Second demo for [EmberFest14](http://www.slideshare.net/artemsuschev/ember-famous) talk
 
 ##How to start
 You have to emulate touch events
